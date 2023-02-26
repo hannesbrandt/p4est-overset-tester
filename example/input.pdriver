@@ -1,0 +1,26 @@
+============================
+# WAKE3D DRIVER INPUT FILE #
+============================
+
+
+===========
+# SOLVERS #
+===========
+number_of_solvers: 1		# number of solvers to load
+so0: ./lib/libdg4est3d.so  	# so{#}: /path/to/lib{solver}.so
+
+==========
+# Groups #
+==========
+number_of_groups: 1		# number of mesh groups
+group0: 0 1  			# group{#}: solver_so_id num_ranks
+group1: 0 3
+
+off_body_group: 0		# group id of p4est background mesh
+
+====================
+# Mesh Translation #
+====================
+translation0: 0.0 0.0 0.0	# {x,y,z}
+translation1: 0.0 0.0 0.0
+
