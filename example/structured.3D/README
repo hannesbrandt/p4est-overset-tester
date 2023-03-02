@@ -1,0 +1,8 @@
+TO RUN:
+  mpirun -np 1 ./pdriver.mpi input.pdriver
+
+PARALLEL RUN
+  - set the number of ranks to be used in `input.pdriver`"
+    example (4 mpi ranks for solver0):
+       group0: 0 4         # group{id}: solver_id num_ranks 
+  - mpirun -np 4 ./pdriver.mpi input.pdriver

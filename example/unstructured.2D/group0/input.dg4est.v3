@@ -1,0 +1,88 @@
+                        DG4EST INPUT FILE (Version 3.0)
+===============================================================================
+#                                DG4EST INPUTS                                #
+===============================================================================
+------------
+# Log Info #
+------------
+log_display: 0                # Logging options:
+                              #   [0]: log all
+                              #   [1]: residual/performance/igpb/mesh
+                              #   [2]: residual/performance/igbp
+                              #   [3]: residual/performance/function
+                              #   [4]: residual/performance details
+                              #   [5]: residual/performance summary
+                              #   [6]: residual details
+                              #   [7]: residual summary
+                              #   [8]: residual only
+                              #   [9]: log none
+-----------
+# File IO #
+-----------
+visualization_interval: 1     # Interval to output visualization file
+-------------------
+# Structured Grid #
+-------------------
+nelem: 8 8 8                  # x-elements y-elements z-elements
+domain_lo: -5.0 -5.0 -5.0     # xlo ylo zlo
+domain_hi:  5.0  5.0  5.0     # xhi yhi zhi
+periodic_flag: 0 0 0          # x-flag y-flag z-flag
+                              #   [0]: periodic OFF
+                              #   [1]: periodic ON
+---------------------
+# Unstructured Grid #
+---------------------
+unstructured_flag: 1          # Unstructured grid flag:
+                              #   [0]:   structured grid
+                              #   [1]: unstructured grid
+unstructured_file: naca0012.2D.msh
+
+--------------
+# AMR Levels #
+--------------
+max_amr_level: 1              # Maximum amr level number
+min_amr_level: 0              # Minimum amr level number
+
+----------
+# Regrid #
+----------
+regrid_interval: 1            # Global time step regrid interval
+regrid_buffer: 0              # Regrid buffer layer (no adjacent hanging faces)
+regrid_nspread: 0             # Number of quadrants to spread tagging
+regrid_coarsen: 1             # Coarsening flag options:
+                              #   [0]: coarsen OFF
+                              #   [1]: coarsen ON
+regrid_features: 1            # Regrid tagging based on features:
+                              #   [0]: tag features OFF
+                              #   [1]: tag features ON
+regrid_point_scale: 1.0       # Box radius to tag points (scales point size)
+regrid_point_scale_cf: 1.0    # Box radius coarse level scale factor (rescales regrid_point_scale)
+----------------------
+# Regrid h-AMR Boxes #
+----------------------
+amr_nhboxes: 1                # Number of h-adaption box regions
+amr_hbox0_level: 1            # Level of box region
+amr_hbox0_lo: 0.0 0.0 0.0     # xlo ylo zlo
+amr_hbox0_hi: 1.0 1.0 1.0     # xhi yhi zhi
+amr_hbox0_autotag: 1          # Refine level strategy:
+                              #   [0]: auto tag OFF: feature tag only
+                              #   [1]: auto tag ON
+-----------------------
+# Boundary Conditions #
+-----------------------
+# Structured Grid BCs #
+bc_xlo: 4                     # Boundary condition options (structured grids):
+bc_xhi: 4                     #   [1]: free stream
+bc_ylo: 4                     #   [2]: slip wall
+bc_yhi: 4                     #   [3]: no-slip wall
+bc_zlo: 2                     #   [4]: characteristic
+bc_zhi: 2                     #   [5]: total inlet
+
+# Unstructured Grid BCs #
+no_slip_wall0:   'Wall'         # List of physical tags
+characteristic0: 'Far field'  # List of physical tags
+slip_wall0:      'Periodic'
+
+# Overset BC identification #
+wake3d_wbc: 'Wall, Periodic'  # Wake3d wall boundaries list
+wake3d_obc: 'Far field'       # Wake3d outer boundaries list

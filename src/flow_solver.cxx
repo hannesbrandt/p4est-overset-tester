@@ -65,10 +65,12 @@ void flow_solver::flow_set_pointers(){
                &iblank,
                &iwbcnode,
                &iobcnode,
-               &ndc4,
-               &ndc5,
-               &ndc6,
-               &ndc8,
+               &ndcTri,
+               &ndcQuad,
+               &ndcTet,
+               &ndcPyr,
+               &ndcPrism,
+               &ndcHex,
                &iblank_cell,
                &count_receptor_nodes,
                &create_receptor_nodes,
@@ -80,6 +82,8 @@ void flow_solver::flow_set_pointers(){
            &nnode,
            &nwbc,
            &nobc,
+           &ntri,
+           &nquad,
            &ntet,
            &npyramid,
            &nprism,
@@ -99,11 +103,13 @@ void flow_solver::flow_set_pointers(){
   std::vector<double> nodeRes(nnode,0.0);
   std::vector<int> iflag(nnode,0);
 
-  int nv[ncell_types] = {kstride4,kstride5,kstride6,kstride8};
-  int nc[ncell_types] = {ntet,npyramid,nprism,nhex};
-  int *vconn[ncell_types] = {ndc4,ndc5,ndc6,ndc8};
+  char elemName[][ncell_types] = {{"TRI  "},{"QUAD "},{"TET  "},{"PYR  "},{"PRISM"},{"HEX  "}};
+  int nv[ncell_types] = {kstrideTri,kstrideQuad,kstrideTet,kstridePyr,kstridePrism,kstrideHex};
+  int nc[ncell_types] = {ntri,nquad,ntet,npyramid,nprism,nhex};
+  int *vconn[ncell_types] = {ndcTri,ndcQuad,ndcTet,ndcPyr,ndcPrism,ndcHex};
 
   // loop cell types
+  double totalVolume = 0.0;
   for(n=0,k=0; n<ncell_types; n++){
     nvert = nv[n];
     // loop cells of each type
@@ -119,12 +125,39 @@ void flow_solver::flow_set_pointers(){
         xv[m][ZI] = node_xgeom[ZI];
       }
 
-      vol = 1.0; //TODO: computeCellVolume(xv,nvert);
+      int dim = (n<2) ? 2:3;
+      vol = computeCellVolume(xv,n,dim);
+      totalVolume += vol;
       for(m=0; m<nvert; m++) nodeRes[inode[m]] += vol;
     }
   }
+
+#if 1
+  int nnodeG,nwbcG,nobcG,nquadG,nhexG;
+  double totalVolumeG;
+
+  MPI_Reduce(&nnode,&nnodeG,1,MPI_INT,MPI_SUM,0,mpicomm);
+  MPI_Reduce(&nwbc,&nwbcG,1,MPI_INT,MPI_SUM,0,mpicomm);
+  MPI_Reduce(&nobc,&nobcG,1,MPI_INT,MPI_SUM,0,mpicomm);
+  MPI_Reduce(&nquad,&nquadG,1,MPI_INT,MPI_SUM,0,mpicomm);
+  MPI_Reduce(&nhex,&nhexG,1,MPI_INT,MPI_SUM,0,mpicomm);
+  MPI_Reduce(&totalVolume,&totalVolumeG,1,MPI_DOUBLE,MPI_SUM,0,mpicomm);
+  if(rank==0) {
+    fputs( "+========================+\n",stdout);
+    printf(" >> OVERSET STATISTICS <<\n"
+           "    nnodes: %d\n"
+           "      nwbc: %d\n"
+           "      nobc: %d\n"
+           "     nquad: %d\n"
+           "      nhex: %d\n"
+           "    volume: %f\n",
+            nnodeG,nwbcG,nobcG,nquadG,nhexG,totalVolumeG);
+    fputs( "+========================+\n",stdout);
+  }
+#endif
+
   // nodal resolution: average of all the cells associated with it
-  for(i=0; i<nnode; i++) nodeRes[i] /= iflag[i];
+  for(i=0; i<nnode; i++) {if(iflag[i]) nodeRes[i] /= iflag[i];}
 
   /* set p4est info */
   if(get_p4est != NULL) p4est = get_p4est();

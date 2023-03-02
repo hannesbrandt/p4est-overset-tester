@@ -1,0 +1,14 @@
+Compilation
+ - run `./makescript`
+
+Execute Examples
+ - go to `build/bin/structured.2D`
+ - execute by running `./run.sh`
+
+There are more examples in the examples directory (which are copied to build/bin via ./makescript)
+ - structured.2D   : 2D p4est cube with a box-defined refinement 
+ - structured.3D   : 3D version
+ - unstructured.2D : 2D unstructured gmsh (binary) format NACA0012 airfoil with box refinement
+ - unstructured.3D : 3D version
+
+To run in parallel (see the README in each example), edit (1) input.pdriver file and (2) the run.sh file.

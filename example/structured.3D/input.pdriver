@@ -1,0 +1,16 @@
+===========
+# SOLVERS #
+===========
+number_of_solvers: 1
+so0: ../../lib/libovtest3d.so
+
+==========
+# Groups #
+==========
+number_of_groups: 1 # number of mesh groups
+group0: 0 1         # group{id}: solver_id num_ranks
+off_body_group: 0   # group_id
+====================
+# Mesh Translation #
+====================
+translation0: 0.0 0.0 0.0 # {x y z}

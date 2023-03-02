@@ -12,11 +12,13 @@
 /* PUBLIC CLASS FUNCTIONS */
 /* ======================= */
 void driver_t::initialize(int argc,char **argv){
-    flow = new flow_solver();
     p4est_overset = new p4est_overset_interface();
 
     /* initialize mpi */
     initialize_mpi(argc,argv);
+
+    /* instantiate flow solver */
+    flow = new flow_solver(mpicomm,rank);
 
     /* read driver inputs */
     read_input_file(argc,argv);
