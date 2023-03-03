@@ -155,24 +155,33 @@ public:
   /* mandatory callback functions */
   void (*initialize_group_mpi)(int *group_comm);
   void (*initialize)(void);
-  void (*set_pointers)(double**,
-                       double**,
-                       int**,
-                       int**,
-                       int**,
-                       int**,
-                       int**,
-                       int**,
-                       int**,
-                       int**,
-                       int**,
-                       int**,
-                       void**,
-                       void**,
-                       void**,
-                       void**,
-                       void**);
-  void (*get_data)(int*,int*,int*,int*,int*,int*,int*,int*,int*,int*);
+  void (*set_pointers)(double **soln,
+                       double **geom,
+                       int **iblank,
+                       int **wbcnode,
+                       int **obcnode,
+                       int **ndcTri,
+                       int **ndcQuad,
+                       int **ndcTet,
+                       int **ndcPyr,
+                       int **ndcPrism,
+                       int **ndcHex,
+                       int **iblank_cell,
+                       void **count_receptor_nodes_callback,
+                       void **create_receptor_nodes_callback,
+                       void **donor_inclusion_test_callback,
+                       void **create_donor_frac_callback,
+                       void **convert_to_receptor_coefficients_callback);
+  void (*get_data)(int *body_tag,
+                   int *nnode,
+                   int *nwbc,
+                   int *nobc,
+                   int *ntri,
+                   int *nquad,
+                   int *ntet,
+                   int *npyramid,
+                   int *nprism,
+                   int *nhex);
   void (*output_solution)(int *t);
   void (*point_inclusion)(int *npoint, double *x, int *cell_id);
   p4est_t* (*get_p4est)(void);
