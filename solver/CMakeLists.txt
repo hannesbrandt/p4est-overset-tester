@@ -1,22 +1,3 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.9)
-PROJECT(solver-demo)
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-
-# set C++11 standard
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-
-# --------------------------------------------------------------------------- #
-# force GNU linker to inlude all shared libraries
-if (NOT APPLE)
-  set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-as-needed")
-else ()
-  set(CMAKE_MACOSX_RPATH ON)
-endif ()
-
-set(gtest_dir    "" CACHE PATH "gtest install directory location")
 set(p4est_dir    "" CACHE PATH "p4est install directory location")
 
 # ============================================= #

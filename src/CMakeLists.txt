@@ -20,7 +20,7 @@ add_executable(pdriver.mpi main.cxx)
 target_link_libraries(pdriver.mpi pdriver)
 
 install(TARGETS pdriver pdriver.mpi
-	RUNTIME DESTINATION bin/
+        RUNTIME DESTINATION bin/
         LIBRARY DESTINATION lib/
         ARCHIVE DESTINATION lib/
 )

@@ -32,7 +32,7 @@ target_link_libraries(ovtest2d ${sc_lb} ${p4est_lb} m)
 target_link_libraries(ovtest3d ${sc_lb} ${p4est_lb} m)
 
 install(TARGETS ovtest2d ovtest3d
-	RUNTIME DESTINATION bin/
+        RUNTIME DESTINATION bin/
         LIBRARY DESTINATION lib/
         ARCHIVE DESTINATION lib/
 )
