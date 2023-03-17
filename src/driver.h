@@ -14,6 +14,7 @@
 #include "input.h"
 #include "flow_solver.h"
 #include "p4est_overset_interface.h"
+#include <cerrno>
 
 #ifndef P4_TO_P8
 # include <p4est_extended.h>

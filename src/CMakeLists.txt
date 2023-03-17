@@ -14,7 +14,7 @@ set(SRC
 )
 
 add_library(pdriver SHARED ${SRC})
-target_link_libraries(pdriver ${sc_lb} ${p4est_lb} ${MPI_LIBRARIES})
+target_link_libraries(pdriver ${sc_lb} ${p4est_lb} ${MPI_LIBRARIES} ${CMAKE_DL_LIBS})
 
 add_executable(pdriver.mpi main.cxx)
 target_link_libraries(pdriver.mpi pdriver)
