@@ -50,7 +50,7 @@ void flow_solver::flow_initialize_group_mpi(MPI_Comm group_comm){
   initialize_group_mpi(&new_group_comm);
 }
 
-void flow_solver::flow_set_pointers(){
+void flow_solver::flow_set_pointers(int group_index){
   int inode[8];
   double xv[8][3];
   double vol;
@@ -160,25 +160,31 @@ void flow_solver::flow_set_pointers(){
   for(i=0; i<nnode; i++) {if(iflag[i]) nodeRes[i] /= iflag[i];}
 
   /* set p4est info */
-  if(get_p4est != NULL) p4est = get_p4est();
+  if(group_index == 0)
+  {
+    if(get_p4est != NULL) p4est = get_p4est();
+  }
 
   /* set qpoints */
   if(qpoints) sc_array_destroy(qpoints);
-  qpoints = sc_array_new_count(4*sizeof(double),nnode);
+  if(group_index > 0)
+  {
+    qpoints = sc_array_new_count(4*sizeof(double),nnode);
 
-  wbc = obc = 0;
-  for(i=0; i<nnode; ++i){
-    pt = (double *) sc_array_index(qpoints,i);
+    wbc = obc = 0;
+    for(i=0; i<nnode; ++i){
+      pt = (double *) sc_array_index(qpoints,i);
 
-    /* set point coordinates */
-    pt[XI] = xgeom_translated[3*i+XI];
-    pt[YI] = xgeom_translated[3*i+YI];
-    pt[ZI] = xgeom_translated[3*i+ZI];
+      /* set point coordinates */
+      pt[XI] = xgeom_translated[3*i+XI];
+      pt[YI] = xgeom_translated[3*i+YI];
+      pt[ZI] = xgeom_translated[3*i+ZI];
 
-    /* set volume associated with node */
-    pt[VI] = nodeRes[i];
-    if(iwbcnode[wbc] == i) {pt[VI] = WALL_NODE_VOL; wbc++; continue;}
-    if(iobcnode[obc] == i) {pt[VI] = OUTER_NODE_VOL; obc++; continue;}
+      /* set volume associated with node */
+      pt[VI] = nodeRes[i];
+      if(iwbcnode[wbc] == i) {pt[VI] = WALL_NODE_VOL; wbc++; continue;}
+      if(iobcnode[obc] == i) {pt[VI] = OUTER_NODE_VOL; obc++; continue;}
+    }
   }
 }
 

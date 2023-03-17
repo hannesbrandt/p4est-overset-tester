@@ -284,7 +284,7 @@ public:
   void flow_load_dynamic_library();
   void flow_close_dynamic_library();
   void flow_initialize_group_mpi(MPI_Comm group_comm);
-  void flow_set_pointers();
+  void flow_set_pointers(int group_index);
   void flow_output_solution(int t);
   void flow_point_inclusion(int *npoint, double *x, int *cell_id);
 };
